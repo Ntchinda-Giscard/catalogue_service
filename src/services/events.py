@@ -30,3 +30,17 @@ class EventsService:
         db.refresh(new_event)
 
         return EventSchema.from_orm(new_event)
+    
+    def get_event_by_id(self, event_id: int, db: Session = Depends(get_db)) -> EventSchema | None:
+        event = db.query(Event).filter(Event.id == event_id).first()
+        if event:
+            return EventSchema.from_orm(event)
+        return None
+    
+    def delete_event(self, event_id: int, db: Session = Depends(get_db)) -> bool:
+        event = db.query(Event).filter(Event.id == event_id).first()
+        if event:
+            db.delete(event)
+            db.commit()
+            return True
+        return False
