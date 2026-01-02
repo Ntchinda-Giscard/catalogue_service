@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+from database.models import Base
 from src.routes.event_route import events_router
+from src.database.sessions import engine
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -12,6 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+Base.metadata.create_all(bind=engine)
 
 
 app.include_router(events_router)
