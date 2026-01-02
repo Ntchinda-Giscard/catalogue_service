@@ -24,3 +24,13 @@ def create_event(event: EventSchema, service: EventsService = Depends()) -> Even
         return new_event
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+@events_router.get("/{event_id}", response_model=EventSchema)
+def get_event(event_id: int, service: EventsService = Depends()) -> EventSchema:
+    try:
+        event = service.get_event_by_id(event_id)
+        if event is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event not found")
+        return event
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
