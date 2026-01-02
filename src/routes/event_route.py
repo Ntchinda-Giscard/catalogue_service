@@ -5,7 +5,7 @@ from typing import List
 
 
 events_router = APIRouter(
-    prefix="api/v1/events",
+    prefix="/api/v1/events",
     tags=["events"],
 )
 
