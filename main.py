@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from database.models import Base
+from src.database.models import Base
 from src.routes.event_route import events_router
 from src.database.sessions import engine
 from fastapi.middleware.cors import CORSMiddleware
