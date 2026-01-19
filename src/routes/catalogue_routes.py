@@ -45,6 +45,6 @@ def search_buses(
     service: CatalogueService = Depends(get_service)
 ):
     """
-    Search for bus schedules between two cities.
+        Search for bus schedules between two cities.
     """
     return service.search_schedules(origin, destination)
