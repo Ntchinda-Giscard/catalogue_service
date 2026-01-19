@@ -27,6 +27,13 @@ spec:
               value: "0.0.0.0"
             - name: RI_APP_PORT
               value: "5540"
+          resources:
+            requests: # resource requests
+              memory: "512Mi" # memory request
+              cpu: "250m" # cpu request
+            limits: # resource limits
+              memory: "1Gi" # memory limit
+              cpu: "500m" # cpu limit
           volumeMounts:
             - name: redisinsight # Pod volumes to mount into the container's filesystem. Cannot be updated.
               mountPath: /data
