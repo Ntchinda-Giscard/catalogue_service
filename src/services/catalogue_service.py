@@ -67,3 +67,6 @@ class CatalogueService:
         # Get schedules for these routes
         schedules = self.db.query(Schedule).filter(Schedule.route_id.in_(route_ids)).all()
         return schedules
+
+    def get_route(self, route_id: int):
+        return self.db.query(Route).filter(Route.id == route_id).first()

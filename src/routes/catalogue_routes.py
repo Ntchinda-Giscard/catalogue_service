@@ -34,6 +34,13 @@ def create_bus(bus: BusCreate, service: CatalogueService = Depends(get_service))
 def create_route(route: RouteCreate, service: CatalogueService = Depends(get_service)):
     return service.create_route(route)
 
+@router.get("/routes/{route_id}", response_model=RouteResponse)
+def get_route(route_id: int, service: CatalogueService = Depends(get_service)):
+    route = service.get_route(route_id)
+    if not route:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Route not found")
+    return route
+
 @router.post("/schedules", response_model=ScheduleResponse)
 def create_schedule(schedule: ScheduleCreate, service: CatalogueService = Depends(get_service)):
     return service.create_schedule(schedule)
