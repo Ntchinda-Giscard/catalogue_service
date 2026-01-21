@@ -3,13 +3,14 @@ name: Catalogue Service CI/CD
 on:
   push:
     branches: [ main, develop ]
+    tags: [ 'v*' ]
     paths:
-      - Catalogue/**
+      - '**'
       - '.github/workflows/catalogue-ci.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - Catalogue/**
+      - '**'
   workflow_dispatch:
 
 env:
@@ -35,19 +36,16 @@ jobs:
           enable-cache: false
 
       - name: Install dependencies
-        working-directory: ./Catalogue
         run: |
           uv sync
 
       - name: Run linting
-        working-directory: ./Catalogue
         run: |
           # Add linting commands here
           # uv run ruff check .
           echo "Linting would run here"
 
       - name: Run tests
-        working-directory: ./Catalogue
         run: |
           # Add test commands here
           # uv run pytest tests/ -v
@@ -70,16 +68,14 @@ jobs:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./Catalogue
+          context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
