@@ -3,6 +3,7 @@ name: Catalogue Service CI/CD
 on:
   push:
     branches: [ main, develop ]
+    tags: [ 'v*' ]
     paths:
       - Catalogue/**
       - '.github/workflows/catalogue-ci.yml'
@@ -70,10 +71,8 @@ jobs:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push Docker image
